@@ -19,7 +19,7 @@
                             Ricette
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="recipesDropdown">
-                            <li><a class="dropdown-item" href="#">Aggiungi</a></li>
+                            <li><a class="dropdown-item" href="{% url 'recipe:create_recipe' %}">Aggiungi</a></li>
                             <li><a class="dropdown-item" href="#">Modifica</a></li>
                             <li><a class="dropdown-item" href="#">Elimina</a></li>
                         </ul>
@@ -29,7 +29,7 @@
                             Ingredienti
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="ingredientsDropdown">
-                            <li><a class="dropdown-item" href="#">Aggiungi</a></li>
+                            <li><a class="dropdown-item" href="{% url 'recipe:create_ingredient' %}">Aggiungi</a></li>
                             <li><a class="dropdown-item" href="#">Modifica</a></li>
                             <li><a class="dropdown-item" href="#">Elimina</a></li>
                         </ul>
@@ -50,9 +50,12 @@
         </nav>
     {% endblock %}
 
-
-    <h1>Home page</h1>
-    <p>Welcome to the home page!</p>
+    <div class="container text-center mt-5">
+        <h1>Welcome to recipe book</h1>
+        <form class="d-flex justify-content-center mt-3">
+            <input class="form-control rounded-pill" style="width: 50%; height: 50px;" type="search" placeholder="Cerca ricette" aria-label="Search">
+        </form>
+    </div>
 
     {% include 'footer.html' %}
 {% endblock %}

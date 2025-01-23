@@ -1,5 +1,7 @@
 from django import forms
 from .models import *
+from django.forms import inlineformset_factory
+
 
 class recipeForm(forms.ModelForm):
     name = forms.CharField(
@@ -87,3 +89,12 @@ class noteForm(forms.ModelForm):
     class Meta:
         model = Note
         fields = ['text']
+
+
+RecipeIngredientFormSet = inlineformset_factory(
+    Recipe,  # The parent model
+    RecipeIngredient,  # The child model
+    form=recipeIngredientForm,  # Use the custom form
+    extra=1,  # Initial extra empty forms
+    can_delete=False,  # Allow deletion of forms
+)
