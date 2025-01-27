@@ -5,7 +5,11 @@
 {% block content %}
     {% include 'head.html' %}
     <div class="container mt-4">
-        <h1>Crea Ingrediente</h1>
+        <div class="description w-100 d-flex justify-content-between align-items-center p-2">
+            <h1>Crea Ingrediente</h1>
+            <a href="{% url 'recipe:create_bulk_ingredient' %}" class="btn btn-primary">Crea ingredienti</a>
+        </div>
+
         <form method="post">
             {% csrf_token %}
 

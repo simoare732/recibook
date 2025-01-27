@@ -1,6 +1,7 @@
+from django.contrib.messages.context_processors import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, ListView, DeleteView, DetailView, UpdateView
+from django.views.generic import CreateView, ListView, DeleteView, DetailView, UpdateView, FormView
 
 from .models import *
 from .forms import *
@@ -44,4 +45,23 @@ class IngredientCreateView(CreateView):
         return reverse('pages:home_page')
 
 
+class BulkIngredientCreateView(FormView):
+    model = Ingredient
+    form_class = bulkIngredientForm
+    template_name = 'recipe/createBulkIngredient.html'
+    success_url = reverse_lazy('pages:home_page')
 
+
+    def form_valid(self, form):
+        ingredients = form.cleaned_data['ingredients'].split('\n')
+        for ingredient in ingredients:
+            ingredient = ingredient.capitalize().strip()
+            Ingredient.objects.get_or_create(name=ingredient)
+
+        return super().form_valid(form)
+
+
+class RecipeListView(ListView):
+    model = Recipe
+    template_name = 'recipe/listRecipe.html'
+    ordering = ['-date']

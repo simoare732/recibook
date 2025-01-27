@@ -98,3 +98,14 @@ RecipeIngredientFormSet = inlineformset_factory(
     extra=1,  # Initial extra empty forms
     can_delete=False,  # Allow deletion of forms
 )
+
+
+class bulkIngredientForm(forms.Form):
+    ingredients = forms.CharField(
+        label='Inserisci gli ingredienti (uno per riga)',
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'placeholder': 'Esempio:\nFarina\nZucchero\nUova\nLatte',
+            'rows': 10,
+        })
+    )
