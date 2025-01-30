@@ -1,3 +1,5 @@
+import shutil
+
 from django.db import models
 import os
 
@@ -34,6 +36,23 @@ class Recipe(models.Model):
     preparation = models.TextField()
     image = models.ImageField(upload_to=product_image_path, blank=True, null=True)
 
+    DIFFICULTIES = [
+        ('easy', 'Facile'),
+        ('medium', 'Media'),
+        ('hard', 'Difficile'),
+    ]
+    COSTS = [
+        ('low', 'Basso'),
+        ('medium', 'Medio'),
+        ('high', 'Alto'),
+    ]
+    difficult = models.CharField(max_length=255, choices=DIFFICULTIES)
+    time_preparation = models.IntegerField(default=0) # Time of preparation in minutes
+    cooking = models.IntegerField(default=0) # Time of cooking in minutes
+    servings = models.IntegerField(default=0) # Number of servings
+    cost = models.CharField(max_length=255, choices=COSTS) # Cost of the recipe
+
+
     date = models.DateTimeField(auto_now_add=True, editable=False, null=True)
 
     def save(self, *args, **kwargs):
@@ -47,6 +66,17 @@ class Recipe(models.Model):
             super().save(*args, **kwargs)  # Salvataggio iniziale
             self.image = temp_image
             super().save(*args, **kwargs)  # Salvataggio finale con immagine
+
+    def delete(self, *args, **kwargs):
+        # Obtain the path of the folder containing the images of the product
+        product_folder = os.path.join('recipe/imgs', str(self.pk))
+
+        # Verify that the folder exists and if there is, delete it
+        if os.path.exists(product_folder) and os.path.isdir(product_folder):
+            shutil.rmtree(product_folder)  # Remove the folder and its content
+
+        # Delete the product from the database
+        super().delete(*args, **kwargs)
 
     def __str__(self):
         return self.name

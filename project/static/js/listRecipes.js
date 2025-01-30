@@ -2,17 +2,18 @@
 document.getElementById('searchInput').addEventListener('keyup', function() {
     // Get the search value and convert it to lowercase for case-insensitive comparison
     var searchValue = this.value.toLowerCase();
-    // Get all the elements with the class 'card'
-    var recipeCards = document.querySelectorAll('.card');
-    // For every recipe card do the following
-    recipeCards.forEach(function(card) {
+    // Get all the elements with the class 'recipe-container'
+    var recipeContainers = document.querySelectorAll('.recipe-container');
+    // For every recipe container do the following
+    recipeContainers.forEach(function(container) {
         // Get the title of the recipe and convert it to lowercase for case-insensitive comparison
-        var title = card.querySelector('.card-title').innerText.toLowerCase();
-        // If the title includes the search value, display the card, otherwise hide it
+        var title = container.querySelector('.card-title').innerText.toLowerCase();
+        console.log(title)
+        // If the title includes the search value, display the container, otherwise hide it
         if (title.includes(searchValue)) {
-            card.style.display = '';
+            container.style.visibility = 'visible';
         } else {
-            card.style.display = 'none';
+            container.style.visibility = 'hidden';
         }
     });
 });

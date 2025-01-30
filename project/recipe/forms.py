@@ -20,6 +20,38 @@ class recipeForm(forms.ModelForm):
         queryset=Category.objects.all(),
         widget=forms.Select(attrs={'class': 'form-control'})
     )
+    difficult = forms.ChoiceField(
+        label='Difficoltà',
+        required=True,
+        choices=Recipe.DIFFICULTIES,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    time_preparation = forms.IntegerField(
+        label='Tempo di preparazione (minuti)',
+        required=True,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
+
+    cooking = forms.IntegerField(
+        label='Tempo di cottura (minuti) / Tempo di riposo (minuti)',
+        required=True,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
+
+    servings = forms.IntegerField(
+        label='Dosi',
+        required=True,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
+
+    cost = forms.ChoiceField(
+        label='Costo',
+        required=True,
+        choices=Recipe.COSTS,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
     image = forms.ImageField(
         label='Immagine',
         widget=forms.FileInput(attrs={'class': 'form-control'})
@@ -27,7 +59,7 @@ class recipeForm(forms.ModelForm):
 
     class Meta:
         model = Recipe
-        fields = ['name', 'category',  'image', 'preparation']
+        fields = ['name', 'category', 'difficult', 'preparation', 'cooking', 'servings', 'cost', 'image', 'time_preparation']
 
 
 class recipeIngredientForm(forms.ModelForm):

@@ -61,7 +61,7 @@ class BulkIngredientCreateView(FormView):
         return super().form_valid(form)
 
 
-class RecipeListView(ListView):
+class RecipeDeleteView(DeleteView):
     model = Recipe
-    template_name = 'recipe/listRecipe.html'
-    ordering = ['-date']
+    template_name = 'recipe/deleteRecipe.html'
+    success_url = reverse_lazy('pages:home_page')
