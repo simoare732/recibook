@@ -128,7 +128,7 @@ RecipeIngredientFormSet = inlineformset_factory(
     RecipeIngredient,  # The child model
     form=recipeIngredientForm,  # Use the custom form
     extra=1,  # Initial extra empty forms
-    can_delete=False,  # Allow deletion of forms
+    can_delete=True,  # Allow deletion of forms
 )
 
 

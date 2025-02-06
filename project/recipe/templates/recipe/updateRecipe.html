@@ -10,7 +10,7 @@
 {% block content %}
     {% include 'head.html' %}
     <div class="container mt-4">
-        <h1>Crea Ricetta</h1>
+        <h1>Modifica Ricetta</h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
@@ -61,8 +61,18 @@
                 {{ ingredient_formset.management_form }}
                 {% for form in ingredient_formset %}
                     <div class="formset-item">
-                        {{ form.as_p }}
+                        {% for field in form.visible_fields %}
+                            {% if "DELETE" not in field.name %}  {# Esclude il campo DELETE #}
+                                <div class="mb-2">
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <button type="button" class="btn btn-danger btn-sm delete-ingredient my-2">-</button>
                     </div>
+
+
                 {% endfor %}
             </div>
 
@@ -74,4 +84,6 @@
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="{% static 'js/addIngredient.js' %}"></script>
+    <script src="{% static 'js/delIngredient.js' %}"></script>
 {% endblock %}
+

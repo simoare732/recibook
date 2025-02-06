@@ -71,7 +71,7 @@
                     <a href="{% url 'recipe:delete_recipe' recipe.pk %}" class="btn btn-outline-danger btn-sm mb-2">
                         <i class="fas fa-trash-alt"></i>
                     </a>
-                    <a href="" class="btn btn-outline-primary btn-sm">
+                    <a href="{% url 'recipe:update_recipe' recipe.pk %}" class="btn btn-outline-primary btn-sm">
                         <i class="fas fa-cogs"></i>
                     </a>
                 </div>
