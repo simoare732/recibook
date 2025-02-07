@@ -20,8 +20,6 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="recipesDropdown">
                             <li><a class="dropdown-item" href="{% url 'recipe:create_recipe' %}">Aggiungi</a></li>
-                            <li><a class="dropdown-item" href="#">Modifica</a></li>
-                            <li><a class="dropdown-item" href="#">Elimina</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -30,8 +28,7 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="ingredientsDropdown">
                             <li><a class="dropdown-item" href="{% url 'recipe:create_ingredient' %}">Aggiungi</a></li>
-                            <li><a class="dropdown-item" href="#">Modifica</a></li>
-                            <li><a class="dropdown-item" href="#">Elimina</a></li>
+                            <li><a class="dropdown-item" href="{% url 'recipe:list_ingredients' %}">Lista</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -39,9 +36,8 @@
                             Categorie
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
-                            <li><a class="dropdown-item" href="#">Aggiungi</a></li>
-                            <li><a class="dropdown-item" href="#">Modifica</a></li>
-                            <li><a class="dropdown-item" href="#">Elimina</a></li>
+                            <li><a class="dropdown-item" href="{% url 'recipe:create_category' %}">Aggiungi</a></li>
+                            <li><a class="dropdown-item" href="{% url 'recipe:list_categories' %}">Lista</a></li>
                         </ul>
                     </li>
                 </ul>

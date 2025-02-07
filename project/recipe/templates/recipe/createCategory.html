@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Category{% endblock %}
+
+{% block content %}
+    {% include 'head.html' %}
+    <div class="container mt-4">
+        <h1>Crea Categoria</h1>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <p>Dettagli della categoria</p>
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-primary">Salva</button>
+        </form>
+    </div>
+    {% include 'footer.html' %}
+{% endblock %}
