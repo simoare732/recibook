@@ -62,8 +62,20 @@
                 {% for form in ingredient_formset %}
                     <div class="formset-item">
                         {{ form.as_p }}
+                        {% if not forloop.first %}
+                            <button type="button" class="remove-ingredient btn btn-danger my-2">-</button>
+                        {% endif %}
                     </div>
                 {% endfor %}
+            </div>
+
+            <!-- Blocco nascosto per il template dell'empty_form -->
+            <div id="empty-form" style="display: none;">
+                <div class="formset-item">
+                    {{ ingredient_formset.empty_form.as_p }}
+                    <!-- Nel template dell'empty_form lasciamo il bottone; verrà nascosto se il nuovo form diventa il primo -->
+                    <button type="button" class="remove-ingredient btn btn-danger my-2">-</button>
+                </div>
             </div>
 
             <button type="button" class="btn btn-success" id="add-ingredient">+</button>

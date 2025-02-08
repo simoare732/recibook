@@ -61,19 +61,21 @@
                 {{ ingredient_formset.management_form }}
                 {% for form in ingredient_formset %}
                     <div class="formset-item">
-                        {% for field in form.visible_fields %}
-                            {% if "DELETE" not in field.name %}  {# Esclude il campo DELETE #}
-                                <div class="mb-2">
-                                    {{ field.label_tag }}
-                                    {{ field }}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                        <button type="button" class="btn btn-danger btn-sm delete-ingredient my-2">-</button>
+                        {{ form.as_p }}
+                        {% if not forloop.first %}
+                            <button type="button" class="remove-ingredient btn btn-danger my-2">-</button>
+                        {% endif %}
                     </div>
-
-
                 {% endfor %}
+            </div>
+
+            <!-- Blocco nascosto per il template dell'empty_form -->
+            <div id="empty-form" style="display: none;">
+                <div class="formset-item">
+                    {{ ingredient_formset.empty_form.as_p }}
+                    <!-- Nel template dell'empty_form lasciamo il bottone; verrà nascosto se il nuovo form diventa il primo -->
+                    <button type="button" class="remove-ingredient btn btn-danger my-2">-</button>
+                </div>
             </div>
 
             <button type="button" class="btn btn-success" id="add-ingredient">+</button>
@@ -84,6 +86,5 @@
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="{% static 'js/addIngredient.js' %}"></script>
-    <script src="{% static 'js/delIngredient.js' %}"></script>
 {% endblock %}
 
