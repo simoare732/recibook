@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let addButton = document.getElementById("add-ingredient");
     let totalForms = document.getElementById("id_recipeingredient_set-TOTAL_FORMS");
 
-    // Funzione per aggiornare gli indici dei form dopo una rimozione o aggiunta
+    // Function to update the indices of the formset items
     function updateFormIndices() {
         let forms = document.querySelectorAll("#formset-container .formset-item");
         forms.forEach((formItem, index) => {
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
         totalForms.value = forms.length;
     }
 
-    // Gestione della rimozione tramite event delegation
+    // Manage delete event delegation
     formsetContainer.addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("remove-ingredient")) {
             let formItem = event.target.closest(".formset-item");
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Gestione del pulsante per aggiungere un nuovo ingrediente
+    // Manage add event
     addButton.addEventListener("click", function () {
         let currentFormCount = parseInt(totalForms.value);
         // Recupera il template dell'empty form

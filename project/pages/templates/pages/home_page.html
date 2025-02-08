@@ -46,11 +46,44 @@
         </nav>
     {% endblock %}
 
+    <h1 class="text-center">Welcome to recipe book</h1>
+    <div class="container mt-3">
+        <h2>Filtri</h2>
+        <div class="row g-3 align-items-center">
+            <!-- Filtro per Categoria -->
+            <div class="col-md-4">
+                <label for="categoryFilter" class="form-label">Categoria</label>
+                <select id="categoryFilter" class="form-select">
+                    <option value="">Tutte le categorie</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat.name }}">{{ cat.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- Filtro per Ingredienti tramite SELECT -->
+            <div class="col-md-8">
+                <label for="ingredientSelect" class="form-label">Ingredienti</label>
+                <select id="ingredientSelect" class="form-select">
+                    <option value="">Seleziona un ingrediente</option>
+                    {% for ing in ingredients %}
+                        <option value="{{ ing.name }}">{{ ing.name }}</option>
+                    {% endfor %}
+                </select>
+                <!-- Container per mostrare gli ingredienti selezionati -->
+                <div id="selectedIngredients" class="mt-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra di ricerca -->
     <div class="container text-center mt-5">
-        <h1>Welcome to recipe book</h1>
-        <input class="form-control rounded-pill mx-auto" id="searchInput" style="width: 50%; height: 50px;" type="search" placeholder="Cerca ricette" aria-label="Search">
+        <input class="form-control rounded-pill mx-auto mb-4" id="searchInput" style="width: 50%; height: 50px;" type="search" placeholder="Cerca ricette" aria-label="Search">
+
+        <!-- Lista delle ricette -->
         {% for recipe in recipes %}
-            <div class="d-flex justify-content-center mb-3 recipe-container">
+            <div class="d-flex justify-content-center mb-3 recipe-container"
+                 data-category="{{ recipe.category.name }}"
+                 data-ingredients="{% for ri in recipe.recipeingredient_set.all %}{{ ri.ingredient.name }}{% if not forloop.last %}, {% endif %}{% endfor %}">
                 <div class="card my-2 rounded" style="flex:0.35;">
                     <div class="row g-0">
                         <div class="col-md-4 image-container">
@@ -74,6 +107,8 @@
             </div>
         {% endfor %}
     </div>
+
+
 
     {% include 'footer.html' %}
 
