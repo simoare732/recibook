@@ -115,7 +115,7 @@ class noteForm(forms.ModelForm):
     text = forms.CharField(
         label='Note',
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control'})
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Note sulle ricetta'})
     )
 
     class Meta:

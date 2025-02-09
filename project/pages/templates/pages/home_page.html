@@ -48,7 +48,6 @@
 
     <h1 class="text-center">Welcome to recipe book</h1>
     <div class="container mt-3">
-        <h2>Filtri</h2>
         <div class="row g-3 align-items-center">
             <!-- Filtro per Categoria -->
             <div class="col-md-4">
@@ -83,8 +82,8 @@
         {% for recipe in recipes %}
             <div class="d-flex justify-content-center mb-3 recipe-container"
                  data-category="{{ recipe.category.name }}"
-                 data-ingredients="{% for ri in recipe.recipeingredient_set.all %}{{ ri.ingredient.name }}{% if not forloop.last %}, {% endif %}{% endfor %}">
-                <div class="card my-2 rounded" style="flex:0.35;">
+                 data-ingredients="{% for ri in recipe.ingredients.all %}{{ ri.ingredient.name }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                <div class="card my-2 rounded" onclick="window.location.href='{% url 'recipe:detail_recipe' recipe.pk %}'" style="flex:0.35;">
                     <div class="row g-0">
                         <div class="col-md-4 image-container">
                             <img src="{{ recipe.image.url }}" class="img-fluid rounded-start" alt="img" style="object-fit: contain; max-height: 70px">

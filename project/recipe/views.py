@@ -1,11 +1,9 @@
 import json
 
-from django.contrib.messages.context_processors import messages
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.edit import FormMixin
 from django.views.generic import CreateView, ListView, DeleteView, DetailView, UpdateView, FormView
 
 from .models import *
@@ -35,6 +33,7 @@ class RecipeCreateView(CreateView):
             self.object = form.save()  # Salva la ricetta
             ingredient_formset.instance = self.object  # Associa gli ingredienti alla ricetta
             ingredient_formset.save()  # Salva il formset
+            Note.objects.create(recipe=self.object)  # Crea una nota vuota per la ricetta
             return redirect(self.success_url)
         else:
             # Se il formset non è valido, ritorna il form con gli errori
@@ -167,3 +166,36 @@ def delete_category(request, pk):
         except Ingredient.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'Category not found'})
     return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+
+class RecipeDetailView(FormMixin, DetailView):
+    model = Recipe
+    template_name = 'recipe/recipeDetail.html'
+    form_class = noteForm
+
+    # Per ritornare alla stessa pagina dopo il salvataggio
+    def get_success_url(self):
+        return reverse('recipe:detail_recipe', kwargs={'pk': self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['ingredients'] = RecipeIngredient.objects.filter(recipe=self.object)
+        # Ottieni (o crea) la nota associata alla ricetta
+        note_instance, created = Note.objects.get_or_create(recipe=self.object)
+        context['form'] = self.form_class(instance=note_instance)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()  # Recupera l'oggetto Recipe
+        # Ottieni (o crea) la nota associata alla ricetta
+        note_instance, created = Note.objects.get_or_create(recipe=self.object)
+        # Inizializza il form passando anche l'istanza esistente
+        form = self.form_class(request.POST, instance=note_instance)
+
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.recipe = self.object
+            note.save()
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)

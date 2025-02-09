@@ -85,7 +85,7 @@ class Recipe(models.Model):
 class RecipeIngredient(models.Model):
     UNIT = [
         ('g', 'Grammi'),
-        ('kg', 'Chilogrammi'),
+        ('kg', 'Kilogrammi'),
         ('ml', 'Millilitri'),
         ('l', 'Litri'),
         ('pz', 'Pezzi'),
@@ -94,8 +94,8 @@ class RecipeIngredient(models.Model):
         ('tsp', 'Cucchiaini'),
     ]
 
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name='recipes')
     quantity = models.CharField(max_length=255)
     unit_of_measure = models.CharField(max_length=255, choices=UNIT)
 
@@ -107,9 +107,9 @@ class RecipeIngredient(models.Model):
 
 
 class Note(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='notes')
+    recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE, related_name='notes')
     text = models.TextField(blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True, editable=False, null=True)
 
     def __str__(self):
-        return f'Note for {self.recipe.name} of {self.date.strftime("%Y-%m-%d")}'
+        return f'Note for {self.recipe.name}'
