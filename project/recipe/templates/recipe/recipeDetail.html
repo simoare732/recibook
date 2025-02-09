@@ -30,7 +30,11 @@
             <h3>Ingredienti</h3>
             <ul>
                 {% for i in object.ingredients.all %}
-                    <li>{{ i.ingredient.name }}: {{ i.quantity }} {{ i.unit_of_measure }}</li>
+                    <li>{{ i.ingredient.name }}:
+                        {% if i.unit_of_measure != 'qb' %}
+                            {{ i.quantity }}
+                        {% endif %}
+                        {{ i.unit_of_measure }}</li>
                 {% endfor %}
             </ul>
         </div>

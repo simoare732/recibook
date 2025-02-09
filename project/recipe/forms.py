@@ -1,6 +1,7 @@
 from django import forms
 from .models import *
 from django.forms import inlineformset_factory
+from django.forms import BaseInlineFormSet
 
 
 class recipeForm(forms.ModelForm):
@@ -66,7 +67,7 @@ class recipeIngredientForm(forms.ModelForm):
     ingredient = forms.ModelChoiceField(
         label='Ingrediente',
         required=True,
-        queryset=Ingredient.objects.all(),
+        queryset=Ingredient.objects.none(),
         widget=forms.Select(attrs={'class': 'form-control'})
     )
     quantity = forms.CharField(
@@ -85,6 +86,12 @@ class recipeIngredientForm(forms.ModelForm):
     class Meta:
         model = RecipeIngredient
         fields = ['ingredient', 'quantity', 'unit_of_measure']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  # Ottieni l'utente dai kwargs
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['ingredient'].queryset = Ingredient.objects.filter(user=user).order_by('name')
 
 
 class ingredientForm(forms.ModelForm):
@@ -122,15 +129,23 @@ class noteForm(forms.ModelForm):
         model = Note
         fields = ['text']
 
+class BaseRecipeIngredientFormSet(BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        for form in self.forms:
+            form.user = self.user
+            form.fields['ingredient'].queryset = Ingredient.objects.filter(user=self.user).order_by('name')
+
 
 RecipeIngredientFormSet = inlineformset_factory(
-    Recipe,  # The parent model
-    RecipeIngredient,  # The child model
-    form=recipeIngredientForm,  # Use the custom form
-    extra=1,  # Initial extra empty forms
-    can_delete=True,  # Allow deletion of forms
+    Recipe,
+    RecipeIngredient,
+    form=recipeIngredientForm,
+    formset=BaseRecipeIngredientFormSet,
+    extra=1,
+    can_delete=True,
 )
-
 
 class bulkIngredientForm(forms.Form):
     ingredients = forms.CharField(

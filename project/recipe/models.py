@@ -3,6 +3,8 @@ import shutil
 from django.db import models
 import os
 
+from django.contrib.auth.models import User
+
 
 # Define path to save images of products
 def product_image_path(instance, filename):
@@ -17,20 +19,29 @@ def product_image_path(instance, filename):
     # Genera il percorso dell'immagine usando il pk
     return os.path.join(f'recipe/imgs/{instance.pk}', filename)
 class Category(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')
     name = models.CharField(max_length=255, unique=True)
+
+    class Meta:
+        unique_together = ('user', 'name')
 
     def __str__(self):
         return self.name
 
 
 class Ingredient(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ingredients')
     name = models.CharField(max_length=255, unique=True)
+
+    class Meta:
+        unique_together = ('user', 'name')
 
     def __str__(self):
         return self.name
 
 
 class Recipe(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes')
     name = models.CharField(max_length=255)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     preparation = models.TextField()
@@ -92,6 +103,7 @@ class RecipeIngredient(models.Model):
         ('cup', 'Tazze'),
         ('tbsp', 'Cucchiai'),
         ('tsp', 'Cucchiaini'),
+        ('qb', 'Quanto basta'),
     ]
 
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
