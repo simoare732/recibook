@@ -1,23 +1,19 @@
 import shutil
 
 from django.db import models
+from django.conf import settings
 import os
 
 from django.contrib.auth.models import User
 
 
 # Define path to save images of products
-def product_image_path(instance, filename):
-    # Ensure that the instance has a pk
-    if not instance.pk:
-        # Temporaneamente salva l'istanza senza immagine per ottenere un pk
-        temp_image = instance.image
-        instance.image = None
-        instance.save()  # Questo salvataggio iniziale genera il pk
-        instance.image = temp_image
 
-    # Genera il percorso dell'immagine usando il pk
-    return os.path.join(f'recipe/imgs/{instance.pk}', filename)
+def product_image_path(instance, filename):
+    # Crea il percorso dell'immagine basato sul pk della ricetta
+    return os.path.join('recipe/imgs', str(instance.pk), filename)
+
+
 class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')
     name = models.CharField(max_length=255, unique=True)
@@ -48,21 +44,20 @@ class Recipe(models.Model):
     image = models.ImageField(upload_to=product_image_path, blank=True, null=True)
 
     DIFFICULTIES = [
-        ('easy', 'Facile'),
-        ('medium', 'Media'),
-        ('hard', 'Difficile'),
+        ('Facile', 'Facile'),
+        ('Media', 'Media'),
+        ('Difficile', 'Difficile'),
     ]
     COSTS = [
-        ('low', 'Basso'),
-        ('medium', 'Medio'),
-        ('high', 'Alto'),
+        ('Basso', 'Basso'),
+        ('Medio', 'Medio'),
+        ('Alto', 'Alto'),
     ]
     difficult = models.CharField(max_length=255, choices=DIFFICULTIES)
-    time_preparation = models.IntegerField(default=0) # Time of preparation in minutes
-    cooking = models.IntegerField(default=0) # Time of cooking in minutes
-    servings = models.IntegerField(default=0) # Number of servings
-    cost = models.CharField(max_length=255, choices=COSTS) # Cost of the recipe
-
+    time_preparation = models.IntegerField(default=0)  # Time of preparation in minutes
+    cooking = models.IntegerField(default=0)  # Time of cooking in minutes
+    servings = models.IntegerField(default=0)  # Number of servings
+    cost = models.CharField(max_length=255, choices=COSTS)  # Cost of the recipe
 
     date = models.DateTimeField(auto_now_add=True, editable=False, null=True)
 
@@ -78,15 +73,25 @@ class Recipe(models.Model):
             self.image = temp_image
             super().save(*args, **kwargs)  # Salvataggio finale con immagine
 
+            # Crea la cartella per l'immagine, se non esiste
+            if self.image:
+                product_folder = os.path.join(settings.MEDIA_ROOT, 'recipe/imgs', str(self.pk))
+                if not os.path.exists(product_folder):
+                    os.makedirs(product_folder)
+
     def delete(self, *args, **kwargs):
-        # Obtain the path of the folder containing the images of the product
-        product_folder = os.path.join('recipe/imgs', str(self.pk))
+        # Rimuovi l'immagine dalla cartella specifica
+        if self.image:
+            image_path = self.image.path
+            if os.path.exists(image_path):
+                os.remove(image_path)  # Rimuove l'immagine
 
-        # Verify that the folder exists and if there is, delete it
+        # Rimuovi la cartella
+        product_folder = os.path.join(settings.MEDIA_ROOT, 'recipe/imgs', str(self.pk))
         if os.path.exists(product_folder) and os.path.isdir(product_folder):
-            shutil.rmtree(product_folder)  # Remove the folder and its content
+            shutil.rmtree(product_folder)  # Rimuove la cartella e il suo contenuto
 
-        # Delete the product from the database
+        # Elimina l'oggetto dalla base dati
         super().delete(*args, **kwargs)
 
     def __str__(self):

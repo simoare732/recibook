@@ -29,4 +29,11 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += static('/recipe/imgs', document_root=os.path.join(settings.BASE_DIR, 'recipe/imgs'))
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    from django.views.static import serve
+    from django.urls import re_path
+
+    urlpatterns += [
+        re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
