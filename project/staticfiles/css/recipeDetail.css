@@ -1,0 +1,16 @@
+.detail-img-fluid{
+    max-height: 500px;
+    object-fit: contain;
+}
+
+.detail-img-container{
+    width: 100%; /* Imposta la larghezza del contenitore */
+    height: 300px; /* Imposta un'altezza fissa */
+    display: flex;
+    justify-content: center; /* Centra l'immagine orizzontalmente */
+    align-items: center; /* Centra l'immagine verticalmente */
+}
+
+.recipe-symbols{
+    color: #009933;
+}

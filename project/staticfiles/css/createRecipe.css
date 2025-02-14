@@ -1,0 +1,6 @@
+input[name$="-DELETE"] {
+    display: none;
+}
+label[for$="-DELETE"] {
+    display: none;
+}
