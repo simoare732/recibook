@@ -37,8 +37,10 @@ http://localhost:8000/
 ```
 
 ## Windows
-There you can have only keep Windows folder. You can run the setup.ps1 file. 
-It will install all the required libraries. After it finished, you can run the start.bat file to start the project.
+First move files in Windows folder in the root directory. \
+Then run the setup.ps1 file. 
+It will install all the required libraries. \
+After it finished, you can run the start.bat file to start the project.
 
 And you can access the project at the following URL:
 ```powershell

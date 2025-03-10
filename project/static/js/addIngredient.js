@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     let formsetContainer = document.getElementById("formset-container");
     let addButton = document.getElementById("add-ingredient");
-    let totalForms = document.getElementById("id_recipeingredient_set-TOTAL_FORMS");
+    let totalForms = document.getElementById("id_ingredients-TOTAL_FORMS");
 
     // Function to update the indices of the formset items
     function updateFormIndices() {
