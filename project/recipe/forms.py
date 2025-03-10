@@ -67,7 +67,7 @@ class recipeIngredientForm(forms.ModelForm):
     ingredient = forms.ModelChoiceField(
         label='Ingrediente',
         required=True,
-        queryset=Ingredient.objects.none(),
+        queryset=Ingredient.objects.all(),
         widget=forms.Select(attrs={'class': 'form-control'})
     )
     quantity = forms.CharField(

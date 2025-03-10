@@ -131,6 +131,9 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+FILE_UPLOAD_PERMISSIONS = None
+
+
 
 # settings.py
 MEDIA_URL = '/media/'

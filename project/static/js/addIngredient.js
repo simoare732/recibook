@@ -10,10 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
             // Aggiorna gli attributi name e id di ogni input/select/textarea
             formItem.querySelectorAll("input, select, textarea").forEach(function(input) {
                 if (input.name) {
-                    input.name = input.name.replace(/recipeingredient_set-\d+-/, "recipeingredient_set-" + index + "-");
+                    input.name = input.name.replace(/ingredients-\d+-/, "ingredients-" + index + "-");
                 }
                 if (input.id) {
-                    input.id = input.id.replace(/id_recipeingredient_set-\d+-/, "id_recipeingredient_set-" + index + "-");
+                    input.id = input.id.replace(/id_ingredients-\d+-/, "id_ingredients-" + index + "-");
                 }
             });
         });
